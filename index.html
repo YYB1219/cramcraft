@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f6f1e7">
 <title>CramCraft AI — Exam Week Study Planner</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23f0b429'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-family='Georgia,serif' font-size='40' font-weight='800' fill='%2320243d'%3EC%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,6 +143,15 @@
   .empty{color:var(--muted);text-align:center;padding:26px 10px;font-size:14px;border:1px dashed var(--line);border-radius:12px;background:var(--card-warm)}
   footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:34px;line-height:1.7}
   .hidden{display:none!important}
+  :focus-visible{ outline:2px solid var(--amber-dark); outline-offset:2px; }
+  @keyframes cc-reveal{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:none;} }
+  #resultsCard.reveal{ animation:cc-reveal .45s ease both; }
+  @media (max-width:560px){
+    #flashMissBtn,#flashKnowBtn{ min-height:52px; display:inline-flex; align-items:center; justify-content:center; text-align:center; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{ transition-duration:0.01ms !important; animation-duration:0.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; }
+  }
   @media print{
     body{background:#ffffff;color:#000000}
     header.hero{display:block;padding:0 0 10px}
@@ -174,7 +184,6 @@
     <div class="hero-preview" aria-hidden="true">
       <div class="preview-head">
         <span class="preview-caption">Preview</span>
-        <span class="preview-sub">Sample output</span>
       </div>
       <div class="preview-list">
         <div class="preview-row"><span>Biology — Genetics</span><span class="pill pill-learn">Learn</span></div>
@@ -557,6 +566,9 @@ function renderPlan(){
   bindPlanClick();
   el("progressBar").style.width = total ? Math.round(doneCount/total*100)+"%" : "0%";
   el("resultsCard").classList.remove("hidden");
+  el("resultsCard").classList.remove("reveal");
+  void el("resultsCard").offsetWidth;
+  el("resultsCard").classList.add("reveal");
 }
 function toggleDone(cb){
   var done = JSON.parse(localStorage.getItem("cramcraft-done") || "{}");
